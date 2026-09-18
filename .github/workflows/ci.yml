@@ -46,4 +46,20 @@ jobs:
         run: docker logs cicd-demo || true
 
       - name: Smoke test
-        run: curl --fail http://localhost:8000/health
+        run: |
+          echo "Waiting for application to start..."
+
+          for i in {1..10}; do
+            if curl --fail http://localhost:8000/health; then
+              echo "Application is ready"
+              exit 0
+            fi
+
+            echo "Not ready yet, retrying..."
+            sleep 1
+          done
+
+          echo "Application did not become ready"
+          docker ps -a
+          docker logs cicd-demo || true
+          exit 1
