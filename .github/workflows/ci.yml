@@ -36,8 +36,14 @@ jobs:
       - name: Start Docker container
         run: docker run -d --name cicd-demo -p 8000:8000 cicd-demo
 
+      - name: Inspect container
+        run: |
+          docker ps -a
+          docker inspect cicd-demo --format '{{.State.Status}} {{.State.ExitCode}} {{.State.Error}}'
+
       - name: Show container logs
-        run: docker logs cicd-demo
+        if: always()
+        run: docker logs cicd-demo || true
 
       - name: Smoke test
         run: curl --fail http://localhost:8000/health
