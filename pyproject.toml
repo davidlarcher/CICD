@@ -6,11 +6,13 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "fastapi>=0.141.1",
+    "uvicorn>=0.53.0",
 ]
 
 [dependency-groups]
 dev = [
     "bandit>=1.9.4",
     "httpx>=0.28.1",
+    "pip-audit>=2.10.1",
     "pytest>=9.1.1",
 ]

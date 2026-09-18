@@ -26,3 +26,15 @@ jobs:
 
       - name: Run Bandit security scan
         run: uv run bandit -r app
+
+      - name: Audit dependencies
+        run: uv run pip-audit
+
+      - name: Build Docker image
+        run: docker build -t cicd-demo .
+
+      - name: Start Docker container
+        run: docker run -d --name cicd-demo -p 8000:8000 cicd-demo
+
+      - name: Smoke test
+        run: curl --fail http://localhost:8000/health
