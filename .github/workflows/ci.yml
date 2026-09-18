@@ -23,3 +23,6 @@ jobs:
 
       - name: Run tests
         run: uv run pytest
+
+      - name: Run Bandit security scan
+        run: uv run bandit -r app
