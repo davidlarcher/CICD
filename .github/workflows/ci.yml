@@ -33,17 +33,17 @@ jobs:
       - name: Build Docker image
         run: docker build -t cicd-demo .
 
+      - name: Scan Docker image with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: cicd-demo
+          format: table
+          exit-code: '1'
+          ignore-unfixed: true
+          severity: CRITICAL,HIGH
+
       - name: Start Docker container
         run: docker run -d --name cicd-demo -p 8000:8000 cicd-demo
-
-      - name: Inspect container
-        run: |
-          docker ps -a
-          docker inspect cicd-demo --format '{{.State.Status}} {{.State.ExitCode}} {{.State.Error}}'
-
-      - name: Show container logs
-        if: always()
-        run: docker logs cicd-demo || true
 
       - name: Smoke test
         run: |
